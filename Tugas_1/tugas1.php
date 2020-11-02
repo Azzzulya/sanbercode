@@ -11,9 +11,9 @@ trait Fight {
     return $serang;
   }
 
-  public function diserang($attack){
-    $this->attack = $attack;
-    $darahBerkurang = $this->darah - ($this->attack / $this->defendPower);
+  public function diserang(){
+    // $this->attack = $attack;
+    $darahBerkurang = $this->darah - ($this->attackLawan / $this->defendPower);
     $diserang = "{$this->nama} sedang diserang, darah berkurang menjadi {$darahBerkurang}";
     return $diserang;
   }
@@ -46,6 +46,7 @@ class Harimau {
     $this->jumlahKaki = 4;
     $this->attackPower= 7;
     $this->defendPower = 8;
+    $this->attackLawan = 10;
     $this->keahlian= "lari cepat";
   }
 
@@ -61,6 +62,7 @@ class Elang {
     $this->jumlahKaki = 2;
     $this->attackPower = 10;
     $this->defendPower = 5;
+    $this->attackLawan = 7;
     $this->keahlian= "terbang tinggi";
   }
 
@@ -74,7 +76,7 @@ $harimau1 = new Harimau("Harimau");
 echo $harimau1->serang("elang");
 echo "<br>";
 // HARIMAU DISERANG
-echo $harimau1->diserang(10);
+echo $harimau1->diserang();
 echo "<br>";
 // HARIMAU ATRAKSI
 echo $harimau1->atraksi();
@@ -93,7 +95,7 @@ $elang1 = new Elang("Elang");
 echo $elang1->serang("elang");
 echo "<br>";
 //ELANG DISERANG
-echo $elang1->diserang(7);
+echo $elang1->diserang();
 echo "<br>";
 //ELANG ATRAKSI
 echo $elang1->atraksi();
