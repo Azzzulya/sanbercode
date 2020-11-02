@@ -3,24 +3,26 @@
 
 // CLASS FIGHT
 trait Fight {
-  public $attackPower, $defendPower;
+  public $attackPower, $defendPower, $attackPower1;
 
   public function serang($lawan){
-    $this->siapa = $lawan;
-    $serang= "{$this->nama} sedang menyerang {$this->siapa}";
+    $this->lawan = $lawan;
+    $serang= "{$this->nama} sedang menyerang {$this->lawan}";
     return $serang;
   }
 
-  public function diserang(){
-    $diserang = "{$this->nama} sedang diserang";
+  public function diserang($attack){
+    $this->attack = $attack;
+    $darahBerkurang = $this->darah - ($this->attack / $this->defendPower);
+    $diserang = "{$this->nama} sedang diserang, darah berkurang menjadi {$darahBerkurang}";
     return $diserang;
   }
 
-  // HEWAN BERKELAHI
-  public function animalFight(){
-    $darahBerkurang = $this->darah - ( $this->attackPower / $this->defendPower);
-    return "Darah {$this->nama} berkurang menjadi {$darahBerkurang}";
-  }
+  // // HEWAN BERKELAHI
+  // public function animalFight(){
+  //   $darahBerkurang = $this->darah - ( $this->attackPower / $this->defendPower);
+  //   return "Darah {$this->nama} berkurang menjadi {$darahBerkurang}";
+  // }
 }
 
 // CLASS HEWAN
@@ -72,13 +74,11 @@ $harimau1 = new Harimau("Harimau");
 echo $harimau1->serang("elang");
 echo "<br>";
 // HARIMAU DISERANG
-echo $harimau1->diserang("elang");
+echo $harimau1->diserang(10);
 echo "<br>";
 // HARIMAU ATRAKSI
 echo $harimau1->atraksi();
 echo "<br>";
-// HARIMAU BERKELAHI
-echo $harimau1->animalFight();
 
 
 echo "<br>";
@@ -93,10 +93,8 @@ $elang1 = new Elang("Elang");
 echo $elang1->serang("elang");
 echo "<br>";
 //ELANG DISERANG
-echo $elang1->diserang("elang");
+echo $elang1->diserang(7);
 echo "<br>";
 //ELANG ATRAKSI
 echo $elang1->atraksi();
 echo "<br>";
-//ELANG BERKELAHI
-echo $elang1->animalFight();
