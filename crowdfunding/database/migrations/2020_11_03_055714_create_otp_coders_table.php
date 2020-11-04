@@ -14,11 +14,11 @@ class CreateOtpCodersTable extends Migration
     public function up()
     {
         Schema::create('otp_coders', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id_otp')->primary();
             $table->string('otp_code');
-            $table->uuid('user_id');
+            $table->uuid('user_id')->nullable();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id_user')->on('users');
         });
     }
 

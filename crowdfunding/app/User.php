@@ -2,14 +2,17 @@
 
 namespace App;
 
+// use App\Traits\UuidTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
+
 class User extends Authenticatable
 {
     use Notifiable;
+    // use UuidTrait;
 
     /**
      * The "booting" function of model
@@ -25,7 +28,10 @@ class User extends Authenticatable
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         });
+
+        // UuidTrait::bootUuidTrait();
     }
+
 
     /**
      * Get the value indicating whether the IDs are incrementing.
@@ -45,6 +51,18 @@ class User extends Authenticatable
     public function getKeyType()
     {
         return 'string';
+    }
+
+    // relation role
+    public function role()
+    {
+      return $this->belongsTo('App\Role');
+    }
+
+    // relation role
+    public function otp_coder()
+    {
+      return $this->hasOne('App\Role');
     }
 
     /**
