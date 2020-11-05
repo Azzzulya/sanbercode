@@ -10,7 +10,7 @@ class DashboardController extends Controller
     {
         $this->middleware(['auth','verified']);
     }
-    
+    // 
     public function index(Request $request)
     {
         return view('userPage');
