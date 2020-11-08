@@ -2,69 +2,29 @@
 
 namespace App;
 
-// use App\Traits\UuidTrait;
+use App\Traits\UsesUuid;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 
-
-class User extends Authenticatable
+class User extends Authenticatable 
 {
-    use Notifiable;
-    // use UuidTrait;
+    use Notifiable, UsesUuid;
 
-    /**
-     * The "booting" function of model
-     *
-     * @return void
-     */
-    /* parent itu manggil class parent nya. kalau kita simpen di User berarti lihat di extend nya  kemana. 
-    nah parent itu dia refers ke kelas tersebut. */
-    protected static function boot() {
+    protected function get_user_role_id(){
+        $role = \App\Role::where('name', 'user')->first();
+        return $role->id;
+    }
+
+    public static function boot(){
         parent::boot();
+
         static::creating(function ($model) {
-            if ( ! $model->getKey()) {
-                $model->{$model->getKeyName()} = (string) Str::uuid();
-            }
+            $model->role_id = $model->get_user_role_id();
         });
-
-        // UuidTrait::bootUuidTrait();
     }
 
-
-    /**
-     * Get the value indicating whether the IDs are incrementing.
-     *
-     * @return bool
-     */
-    public function getIncrementing()
-    {
-        return false;
-    }
-
-    /**
-     * Get the auto-incrementing key type.
-     *
-     * @return string
-     */
-    public function getKeyType()
-    {
-        return 'string';
-    }
-
-    // relation role
-    public function role()
-    {
-      return $this->belongsTo('App\Role');
-    }
-
-    // relation role
-    public function otp_coder()
-    {
-      return $this->hasOne('App\Role');
-    }
-
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -91,4 +51,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin(){
+
+        if($this->role_id === $this->get_user_role_id()){
+            return false;
+        }
+
+        return true;
+    }
 }

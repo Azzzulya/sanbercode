@@ -3,43 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use App\Traits\UsesUuid;
 
-class Otp_coder extends Model
+class OtpCode extends Model
 {
-    protected static function boot() {
-        parent::boot();
-        static::creating(function ($model) {
-            if ( ! $model->getKey()) {
-                $model->{$model->getKeyName()} = (string) Str::uuid();
-            }
-        });
-    
-        // UuidTrait::bootUuidTrait();
-    }
+    use UsesUuid;
+    protected $guarded = [];
 
-    public function users()
-    {
-      return $this->hasOne('App\User');
-    }
-
-    /**
-     * Get the value indicating whether the IDs are incrementing.
-     *
-     * @return bool
-     */
-    public function getIncrementing()
-    {
-        return false;
-    }
-
-    /**
-     * Get the auto-incrementing key type.
-     *
-     * @return string
-     */
-    public function getKeyType()
-    {
-        return 'string';
+    public function user(){
+        return $this->hasOne(user::class);
     }
 }

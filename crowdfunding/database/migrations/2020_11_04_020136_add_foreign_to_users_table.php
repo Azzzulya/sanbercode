@@ -26,7 +26,8 @@ class AddForeignToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            Schema::dropforeign('role_id');
+            $table->dropForeign(['role_id']);
+            $table->dropColumn(['role_id']);
         });
     }
 }
