@@ -3,72 +3,45 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use App\OtpCode;
 use App\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
     /**
-     * Where to redirect users after registration.
+     * Handle the incoming request.
      *
-     * @var string
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __invoke(Request $request)
     {
-        $this->middleware('guest');
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        request()->validate([
+            'name' => [ 'required', 'min:3', 'max:25'],
+            'email' => ['email', 'required', 'unique:users,email'],
+            // 'password' => ['required', 'min:6'],
         ]);
-    }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            // 'role_id' => '72c06574-c1cf-4cb6-bcec-99107db437b3',
+        $user = User::create([
+            'name' => request('name'),
+            'email' => request('email'),
+            'email_verified_at' => null,
+            'password' => bcrypt("12345678"),
+            'remeber_token' =>   null,
+            'role_id' =>  "2d409040-57fe-4280-9194-00ab401194c0",
+            'photo' => null,
+
+        ]);
+
+        $otp = OtpCode::create([
+            ''
+        ]);
+
+        return response()->json([
+            'response_code' => "01",
+            'response_message' => "silakan ceck email anda",
+            $user
         ]);
     }
 }
